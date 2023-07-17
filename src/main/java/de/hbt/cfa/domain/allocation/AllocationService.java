@@ -11,8 +11,8 @@ public class AllocationService {
 
     public Allocation getAllocation() {
         return Allocation.builder()
-                .unassignedParticipants(activityRepository.findAllUnassignedParticipantsForActivity(0L))
-                .activity(activityRepository.findById(0L).orElseThrow())
+                .unassignedParticipants(activityRepository.findAllUnassignedParticipantsForActivity(1L))
+                .activity(activityRepository.findById(1L).orElseThrow())
                 .build();
     }
 

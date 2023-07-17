@@ -3,7 +3,7 @@ package de.hbt.cfa.domain.allocation;
 import de.hbt.cfa.entity.Activity;
 import de.hbt.cfa.entity.Participant;
 import de.hbt.cfa.entity.TimeSlot;
-import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -25,7 +25,7 @@ class ActivityRepositoryTest {
     @Autowired
     ActivityRepository activityRepository;
 
-    @AfterEach
+    @BeforeEach
     public void cleanUp() {
         participantRepository.deleteAll();
         activityRepository.deleteAll();
