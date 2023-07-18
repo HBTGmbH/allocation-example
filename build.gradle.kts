@@ -21,18 +21,23 @@ repositories {
     mavenCentral()
 }
 
+
+val mapstructVersion = "1.5.5.Final"
+
 dependencies {
-    compileOnly("org.projectlombok:lombok")
+    annotationProcessor("org.mapstruct:mapstruct-processor:${mapstructVersion}")
     annotationProcessor("org.projectlombok:lombok")
+    annotationProcessor("org.projectlombok:lombok-mapstruct-binding:0.2.0")
+
+    implementation("org.mapstruct:mapstruct:${mapstructVersion}")
+    compileOnly("org.projectlombok:lombok")
 
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-web")
     runtimeOnly("com.h2database:h2")
 
     developmentOnly("org.springframework.boot:spring-boot-devtools")
-    
-    testCompileOnly("org.projectlombok:lombok")
-    testAnnotationProcessor("org.projectlombok:lombok")
+
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testRuntimeOnly("org.springframework.boot:spring-boot-starter-webflux")
 }

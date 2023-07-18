@@ -1,9 +1,11 @@
 package de.hbt.cfa.domain.allocation;
 
 import de.hbt.cfa.entity.Activity;
-import de.hbt.cfa.entity.TimeSlot;
+import de.hbt.cfa.entity.Participant;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -11,28 +13,43 @@ public class AllocationService {
 
     private final ActivityRepository activityRepository;
 
-    public Allocation getAllocation() {
-        return Allocation.builder()
-                .unassignedParticipants(activityRepository.findAllUnassignedParticipantsForActivity(1L))
-                .activity(activityRepository.findById(1L).orElseThrow())
+    private final AllocationMapper allocationMapper;
+
+    public AllocationDTO getAllocation(Long activityId) {
+        return activityRepository.findById(activityId)
+                .map(this::buildAllocation)
+                .orElse(null);
+    }
+
+    public AllocationDTO updateParticipants(Long activityId, List<TimeSlotDTO> timeSlots) {
+        return activityRepository.findById(activityId)
+                .map(activity -> updateActivityTimeSlots(activity, timeSlots))
+                .map(activityRepository::save)
+                .map(this::buildAllocation)
+                .orElse(null);
+    }
+
+    private Activity updateActivityTimeSlots(Activity activity, List<TimeSlotDTO> timeSlots) {
+        activity.getTimeSlots().forEach(existingTimeSlot ->
+                timeSlots.stream()
+                        .filter(ts -> ts.id().equals(existingTimeSlot.getId()))
+                        .findFirst()
+                        .map(TimeSlotDTO::participants)
+                        //TODO: check that participants exist and are not assigned to multiple time slots
+                        .map(allocationMapper::toParticipants)
+                        .ifPresent(existingTimeSlot::setParticipants));
+        return activity;
+    }
+
+    private AllocationDTO buildAllocation(Activity activity) {
+        return AllocationDTO.builder()
+                .unassignedParticipants(getAllUnassignedParticipantsForActivity(activity.getId()))
+                .activity(allocationMapper.toActivityDTO(activity))
                 .build();
     }
 
-    public Allocation saveAllocation(Allocation allocation) {
-        Activity newActivity = allocation.getActivities().get(0);
-        Activity activity = activityRepository.findById(newActivity.getId())
-                .map(updatedActivity -> {
-                    updatedActivity.getTimeSlots().forEach(timeSlot -> {
-                        newActivity.getTimeSlots().stream()
-                                .filter(ts -> ts.getId().equals(timeSlot.getId()))
-                                .map(TimeSlot::getParticipants)
-                                .forEach(timeSlot::setParticipants);
-                    });
-                    return updatedActivity;
-                }).orElseThrow();
-        return Allocation.builder()
-                .unassignedParticipants(activityRepository.findAllUnassignedParticipantsForActivity(activity.getId()))
-                .activity(activityRepository.save(activity))
-                .build();
+    private List<ParticipantDTO> getAllUnassignedParticipantsForActivity(Long activityId) {
+        List<Participant> unassignedParticipants = activityRepository.findAllUnassignedParticipantsForActivity(activityId);
+        return allocationMapper.toParticipantDTOs(unassignedParticipants);
     }
 }

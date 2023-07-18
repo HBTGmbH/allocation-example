@@ -1,16 +1,16 @@
 package de.hbt.cfa.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.Singular;
+import lombok.ToString;
 
 import java.util.List;
 
 @Entity
 @Data
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
 public class TimeSlot {
 
     @Id
@@ -19,12 +19,11 @@ public class TimeSlot {
 
     String name;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @Singular
     List<Participant> participants;
 
     @ManyToOne
-    @JsonIgnore
-    @ToString. Exclude
+    @ToString.Exclude
     Activity activity;
 }

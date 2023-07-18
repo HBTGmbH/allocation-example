@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Load the initial state from the server when the page is loaded
-    fetch('/allocation')
+    fetch('/allocation/activity/1')
         .then(response => {
             if (response.ok) {
                 return response.json();
@@ -28,7 +28,7 @@ function updateAllocation(allocation) {
         addParticipant(participant, unassignedParticipants);
     });
 
-    allocation.activities[0].timeSlots.forEach(timeSlot => {
+    allocation.activity.timeSlots.forEach(timeSlot => {
         let timeSlotElement = addTimeSlot(timeSlot, document.getElementById('time-slot-list'));
 
         timeSlot.participants.forEach(participant => {
@@ -98,8 +98,7 @@ function drop(event) {
 }
 
 function saveParticipants() {
-    const allocation = {activities: [{id: 1}]};
-    allocation.activities[0].timeSlots = Array.from(document.querySelectorAll('.time-slot'))
+    const timeSlots = Array.from(document.querySelectorAll('.time-slot'))
         .filter(timeSlot => timeSlot.id !== 'participant-list')
         .map(timeSlot => ({
             id: timeSlot.id.substring(timeSlot.id.indexOf('-') + 1),
@@ -110,12 +109,12 @@ function saveParticipants() {
                 }))
         }));
 
-    fetch('/allocation', {
+    fetch('/allocation/activity/1', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(allocation)
+        body: JSON.stringify(timeSlots)
     })
         .then(response => {
             if (!response.ok) {
