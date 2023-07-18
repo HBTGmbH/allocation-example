@@ -1,37 +1,37 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', () => {
     // Add event listeners for drag and drop functionality
-    const timeSlotElements = document.querySelectorAll('.drop-target');
-    timeSlotElements.forEach(function (timeSlotElement) {
-        timeSlotElement.addEventListener('dragover', allowDrop);
-        timeSlotElement.addEventListener('drop', drop);
+    const dropTargets = document.querySelectorAll('.drop-target');
+    dropTargets.forEach(dropTarget => {
+        dropTarget.addEventListener('dragover', allowDrop);
+        dropTarget.addEventListener('drop', drop);
     });
 
     // Load the initial state from the server when the page is loaded
     fetch('/allocation')
-        .then(function (response) {
+        .then(response => {
             if (response.ok) {
                 return response.json();
             } else {
-                throw new Error('Failed to load participant data');
+                throw new Error('Failed to load allocation');
             }
         })
         .then(updateAllocation)
-        .catch(function (error) {
+        .catch(error => {
             console.error(error);
         });
 });
 
 function updateAllocation(allocation) {
-    const unallocatedParticipants = document.getElementById('participant-list');
-    unallocatedParticipants.innerHTML = '';
-    allocation.unassignedParticipants.forEach(function (participant) {
-        addParticipant(participant, unallocatedParticipants);
+    const unassignedParticipants = document.getElementById('participant-list');
+    unassignedParticipants.innerHTML = '';
+    allocation.unassignedParticipants.forEach(participant => {
+        addParticipant(participant, unassignedParticipants);
     });
 
-    allocation.activities[0].timeSlots.forEach(function (timeSlot) {
+    allocation.activities[0].timeSlots.forEach(timeSlot => {
         let timeSlotElement = addTimeSlot(timeSlot, document.getElementById('time-slot-list'));
 
-        timeSlot.participants.forEach(function (participant) {
+        timeSlot.participants.forEach(participant => {
             addParticipant(participant, timeSlotElement);
         });
     });
@@ -81,12 +81,12 @@ function drop(event) {
     const targetSlot = event.target.closest('.time-slot');
 
     Array.from(document.getElementsByClassName('full-course'))
-        .forEach(function (element) {
+        .forEach(element => {
             element.classList.remove('full-course');
         });
 
     const participantCount = targetSlot.getElementsByClassName('participant').length;
-    if (participantCount >= 2) {
+    if (targetSlot.id !== 'participant-list' && participantCount >= 2) {
         targetSlot.classList.add('full-course');
         return;
     }
@@ -95,38 +95,34 @@ function drop(event) {
     participant.addEventListener('dragstart', drag);
     targetSlot.appendChild(participant);
     draggedElement.parentNode.removeChild(draggedElement);
-
-    updateTimeSlots();
 }
 
-function updateTimeSlots() {
-    // const timeSlots = Array.from(document.querySelectorAll('.time-slot'));
-    // const participants = [];
-    //
-    // timeSlots.forEach(function(timeSlot) {
-    //     const participantElements = Array.from(timeSlot.getElementsByClassName('participant'));
-    //     participantElements.forEach(function(participantElement) {
-    //         participants.push({
-    //             id: participantElement.id,
-    //             name: participantElement.textContent,
-    //             timeSlot: timeSlot.id
-    //         });
-    //     });
-    // });
-    //
-    // fetch('/participants', {
-    //     method: 'POST',
-    //     headers: {
-    //         'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify(participants)
-    // })
-    //     .then(function(response) {
-    //         if (!response.ok) {
-    //             throw new Error('Failed to update participant distribution');
-    //         }
-    //     })
-    //     .catch(function(error) {
-    //         console.error(error);
-    //     });
+function saveParticipants() {
+    const allocation = {activities: [{id: 1}]};
+    allocation.activities[0].timeSlots = Array.from(document.querySelectorAll('.time-slot'))
+        .filter(timeSlot => timeSlot.id !== 'participant-list')
+        .map(timeSlot => ({
+            id: timeSlot.id.substring(timeSlot.id.indexOf('-') + 1),
+            participants: Array.from(timeSlot.getElementsByClassName('participant'))
+                .map(participant => ({
+                    id: participant.id.substring(participant.id.indexOf('-') + 1),
+                    name: participant.textContent
+                }))
+        }));
+
+    fetch('/allocation', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(allocation)
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to update allocation');
+            }
+        })
+        .catch(error => {
+            console.error(error);
+        });
 }
