@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import static de.hbt.cfa.domain.allocation.AllocationFixtures.*;
+import static de.hbt.cfa.entity.EntityFixtures.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest

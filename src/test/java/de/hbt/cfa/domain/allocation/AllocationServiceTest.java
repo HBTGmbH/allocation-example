@@ -1,5 +1,8 @@
 package de.hbt.cfa.domain.allocation;
 
+import de.hbt.cfa.entity.EntityFixtures;
+import de.hbt.cfa.entity.Participant;
+import de.hbt.cfa.entity.TimeSlot;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mapstruct.factory.Mappers;
@@ -10,6 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static de.hbt.cfa.domain.allocation.AllocationFixtures.*;
+import static de.hbt.cfa.entity.EntityFixtures.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
