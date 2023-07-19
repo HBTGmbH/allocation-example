@@ -38,6 +38,6 @@ class AllocationControllerTest {
                 .expectStatus()
                 .isOk()
                 .expectBody(AllocationDTO.class)
-                .equals(expectedAllocation);
+                .isEqualTo(expectedAllocation);
     }
 }
