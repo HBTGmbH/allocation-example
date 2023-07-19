@@ -11,22 +11,16 @@ public class EntityFixtures {
         return participant;
     }
 
-    public static TimeSlot timeSlot1WithParticipant(Participant participant) {
-        var timeSlot = new TimeSlot();
-        timeSlot.setName("Slot 1");
-        timeSlot.setParticipants(List.of(participant));
-        return timeSlot;
-    }
-
-    public static TimeSlot timeSlot2WithParticipant(Participant participant) {
-        var timeSlot = new TimeSlot();
-        timeSlot.setName("Slot 2");
+    public static TimeSlot timeSlotWithParticipant(String timeSlotName, Participant participant) {
+        TimeSlot timeSlot = new TimeSlot();
+        timeSlot.setName(timeSlotName);
         timeSlot.setParticipants(List.of(participant));
         return timeSlot;
     }
 
     public static Activity activityWithTimeSlots(TimeSlot... timeSlots) {
         var activity = new Activity();
+        activity.setId(1L);
         activity.setName("Activity 1");
         activity.setTimeSlots(List.of(timeSlots));
 

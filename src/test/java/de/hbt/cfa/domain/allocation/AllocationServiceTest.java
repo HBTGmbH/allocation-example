@@ -1,11 +1,8 @@
 package de.hbt.cfa.domain.allocation;
 
-import de.hbt.cfa.entity.EntityFixtures;
 import de.hbt.cfa.entity.Participant;
-import de.hbt.cfa.entity.TimeSlot;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mapstruct.factory.Mappers;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -23,18 +20,19 @@ public class AllocationServiceTest {
     @Mock
     private ActivityRepository activityRepository;
 
-    private AllocationMapper allocationMapper = Mappers.getMapper(AllocationMapper.class);
+    private final AllocationMapper allocationMapper = new AllocationMapperImpl();
 
     @Test
     public void shouldReturnCorrectAllocation() {
         //given
         var allocationService = new AllocationService(activityRepository, allocationMapper);
 
-        var activity = activityWithTimeSlots(timeSlot1WithParticipant(participant("lri")));
+        Participant participant = participant("lri");
+        var activity = activityWithTimeSlots(timeSlotWithParticipant("Slot 1", participant));
 
         var expectedAllocation = allocationDTO(
                 singleParticipantDTO("sku"),
-                activityWithTimeSlotsDTO(singleTimeSlotDTOWithParticipant("lri")));
+                activityWithTimeSlotsDTO(singleTimeSlotDTOWithParticipant("Slot 1", "lri")));
 
         when(activityRepository.findById(activity.getId())).thenReturn(Optional.of(activity));
         when(activityRepository.findAllUnassignedParticipantsForActivity(activity.getId())).thenReturn(List.of(participant("sku")));

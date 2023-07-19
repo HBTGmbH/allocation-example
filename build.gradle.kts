@@ -30,7 +30,6 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok-mapstruct-binding:0.2.0")
 
     implementation("org.mapstruct:mapstruct:${mapstructVersion}")
-    compileOnly("org.projectlombok:lombok")
 
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-web")

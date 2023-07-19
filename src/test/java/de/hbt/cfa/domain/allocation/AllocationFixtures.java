@@ -12,11 +12,14 @@ public class AllocationFixtures {
     }
 
     public static ActivityDTO activityWithTimeSlotsDTO(List<TimeSlotDTO> timeSlots) {
-        return ActivityDTO.builder().name("Activity 1").timeSlots(timeSlots).build();
+        return ActivityDTO.builder()
+                .id(1L)
+                .name("Activity 1")
+                .timeSlots(timeSlots).build();
     }
 
-    public static List<TimeSlotDTO> singleTimeSlotDTOWithParticipant(String participantName) {
-        return List.of(TimeSlotDTO.builder().name("Slot 1").participants(singleParticipantDTO(participantName)).build());
+    public static List<TimeSlotDTO> singleTimeSlotDTOWithParticipant(String timeSlotName, String participantName) {
+        return List.of(TimeSlotDTO.builder().name(timeSlotName).participants(singleParticipantDTO(participantName)).build());
     }
 
     public static List<ParticipantDTO> singleParticipantDTO(String name) {

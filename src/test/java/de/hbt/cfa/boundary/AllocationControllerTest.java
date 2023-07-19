@@ -27,7 +27,7 @@ class AllocationControllerTest {
     public void shouldReturnTimeSlots() {
         //given
         var expectedAllocation = allocationDTO(singleParticipantDTO("lri"),
-                activityWithTimeSlotsDTO(singleTimeSlotDTOWithParticipant("sku")));
+                activityWithTimeSlotsDTO(singleTimeSlotDTOWithParticipant("Slot 1", "sku")));
         when(allocationService.getAllocation(ACTIVITY_ID))
                 .thenReturn(expectedAllocation);
 

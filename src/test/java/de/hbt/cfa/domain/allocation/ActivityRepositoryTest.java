@@ -32,8 +32,8 @@ class ActivityRepositoryTest {
         var sku = participantRepository.save(participant("sku"));
         var lri = participantRepository.save(participant("lri"));
         var jsc = participantRepository.save(participant("jsc"));
-        var slot1 = timeSlot1WithParticipant(lri);
-        var slot2 = timeSlot2WithParticipant(jsc);
+        var slot1 = timeSlotWithParticipant("Slot 1", lri);
+        var slot2 = timeSlotWithParticipant("Slot 2", jsc);
         var id = activityRepository.save(activityWithTimeSlots(slot1, slot2)).getId();
 
         // when
