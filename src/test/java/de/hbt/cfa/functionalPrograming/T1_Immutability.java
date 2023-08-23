@@ -1,4 +1,4 @@
-package de.hbt.cfa.functionalProgramming;
+package de.hbt.cfa.functionalPrograming;
 
 import de.hbt.cfa.entity.SomeContext;
 import de.hbt.cfa.entity.SomeValueObject;

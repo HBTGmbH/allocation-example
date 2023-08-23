@@ -1,4 +1,4 @@
-package de.hbt.cfa.functionalProgramming;
+package de.hbt.cfa.functionalPrograming;
 
 import java.util.ArrayList;
 import java.util.List;
