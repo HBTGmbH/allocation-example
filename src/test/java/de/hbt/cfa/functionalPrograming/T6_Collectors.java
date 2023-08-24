@@ -18,17 +18,13 @@ public class T6_Collectors {
                 broadwayCards.stream().flatMap(s1 -> cardSymbols.stream().map(s2 -> s1 + s2 + " ")).collect(Collectors.joining());
         System.out.println(resultString);
 
-        // integers.stream().collect(Collectors.joining()); nope
-
         /*  custom collector consist of a supplier (container for our elements)
          *  an accumulator (defines the way to add our elements to the container)
-         *  and a combiner which combines the containers into one when parallelStream() is used
+         *  and a combiner which combines the containers into one when parallelStream() is used useless otherwise
          */
         final ArrayList<String> strings =
                 integers.stream().collect(ArrayList::new, accumulate(), ArrayList::addAll);
         System.out.println(strings);
-
-
     }
 
     private static BiConsumer<ArrayList<String>, Integer> accumulate() {
