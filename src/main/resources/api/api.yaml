@@ -1,0 +1,65 @@
+---
+openapi: 3.0.0
+info:
+  title: Allocation API
+  version: 1.0.0
+paths:
+  /allocation/activity/{activityId}:
+    get:
+      summary: Get an allocation
+      description: Return the allocation of participants to the given activity
+      operationId: getAllocationForActivity
+      parameters:
+        - name: activityId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Allocation'
+components:
+  schemas:
+    Allocation:
+      required:
+        - unassignedParticipants
+      properties:
+        unassignedParticipants:
+          type: array
+          items:
+            $ref: '#/components/schemas/Participant'
+        activity:
+          $ref: '#/components/schemas/Activity'
+    Participant:
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+    Activity:
+      required:
+        - id
+        - name
+        - timeSlots
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        timeSlots:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimeSlot'
+    TimeSlot:
+      properties:
+        id:
+          type: string
+        name:
+          type: string

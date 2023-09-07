@@ -1,7 +1,10 @@
+import org.openapitools.generator.gradle.plugin.tasks.GenerateTask
+
 plugins {
     java
     id("org.springframework.boot") version "3.1.1"
     id("io.spring.dependency-management") version "1.1.0"
+    id("org.openapi.generator") version "7.0.0" // used to demonstrate the build cache
 }
 
 group = "de.hbt.cfa"
@@ -44,3 +47,27 @@ dependencies {
 tasks.withType<Test> {
     useJUnitPlatform()
 }
+
+/**
+ * Demonstration of the build cache when using the openapi-generator plugin
+ * https://docs.gradle.org/current/userguide/build_cache.html
+ *
+ * api.yaml is defined as an input file
+ * @see{GenerateTask.kt:102}
+ *
+ * Gradle will watch the file and call this task only when the file changes.
+ */
+tasks.register<GenerateTask>("generateApi") {
+    generatorName.set("spring")
+
+    inputSpec.set("$rootDir/src/main/resources/api/api.yaml")
+    outputDir.set("$rootDir/build/generated/sources/api")
+
+    configOptions.set(mapOf("dateLibrary" to "java8", "useSpringBoot3" to "true"))
+    modelPackage.set("de.hbt.cfa.model")
+    apiPackage.set("de.hbt.cfa.api")
+}
+
+// Uncomment to run the api generation task before the compile task
+// don't forget to reload the gradle changes
+//tasks.compileJava { dependsOn("generateApi") }
