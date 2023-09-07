@@ -1,6 +1,7 @@
 package de.hbt.cfa.boundary;
 
 import de.hbt.cfa.domain.allocation.AllocationDTO;
+import de.hbt.cfa.domain.allocation.AllocationFixtures;
 import de.hbt.cfa.domain.allocation.AllocationService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
-import static de.hbt.cfa.domain.allocation.AllocationFixtures.*;
 import static org.mockito.Mockito.when;
 
 @WebMvcTest(controllers = AllocationController.class)
@@ -26,8 +26,8 @@ class AllocationControllerTest {
     @Test
     public void shouldReturnTimeSlots() {
         //given
-        var expectedAllocation = allocationDTO(singleParticipantDTO("lri"),
-                activityWithTimeSlotsDTO(singleTimeSlotDTOWithParticipant("Slot 1", "sku")));
+        var expectedAllocation = AllocationFixtures.allocationDTO(AllocationFixtures.singleParticipantDTO("lri"),
+                AllocationFixtures.activityWithTimeSlotsDTO(AllocationFixtures.singleTimeSlotDTOWithParticipant("Slot 1", "sku")));
         when(allocationService.getAllocation(ACTIVITY_ID))
                 .thenReturn(expectedAllocation);
 

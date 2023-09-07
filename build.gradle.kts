@@ -5,6 +5,7 @@ plugins {
     id("org.springframework.boot") version "3.1.1"
     id("io.spring.dependency-management") version "1.1.0"
     id("org.openapi.generator") version "7.0.0" // used to demonstrate the build cache
+    id("com.dorongold.task-tree") version "2.1.1" // to look at the task tree
 }
 
 group = "de.hbt.cfa"
@@ -40,9 +41,55 @@ dependencies {
 
     developmentOnly("org.springframework.boot:spring-boot-devtools")
 
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testRuntimeOnly("org.springframework.boot:spring-boot-starter-webflux")
+    testImplementation("org.junit.jupiter:junit-jupiter")
+    testImplementation("org.assertj:assertj-core")
+    testImplementation("org.mockito:mockito-core")
+    testImplementation("org.mockito:mockito-junit-jupiter")
 }
+
+/**
+ * Demonstrate how to create a new source set for integration tests
+ * and add a new task to run the integration tests after the unit tests.
+ */
+
+sourceSets {
+    create("integrationTest") {
+        java.srcDir("src/integrationTest/java")
+        resources.srcDir("src/integrationTest/resources")
+        compileClasspath += sourceSets["main"].output
+        runtimeClasspath += sourceSets["main"].runtimeClasspath
+    }
+}
+
+val integrationTestImplementation: Configuration by configurations.getting {
+    extendsFrom(configurations.implementation.get())
+}
+
+val integrationTestRuntimeOnly: Configuration by configurations.getting {
+    extendsFrom(configurations.runtimeOnly.get())
+}
+
+dependencies {
+    integrationTestImplementation("org.springframework.boot:spring-boot-starter-test")
+    integrationTestRuntimeOnly("org.springframework.boot:spring-boot-starter-webflux")
+}
+
+// register the new task for running the integration tests
+val integrationTest = tasks.register<Test>("integrationTest") {
+    description = "Runs the integration tests"
+    group = "verification"
+    testClassesDirs = sourceSets["integrationTest"].output.classesDirs
+    classpath = sourceSets["integrationTest"].runtimeClasspath
+    // run integration tests after unit tests
+    mustRunAfter(tasks["test"])
+}
+
+// include this task in the check task to make sure the integration tests run
+tasks.check {
+    dependsOn(integrationTest)
+}
+
+/////////////////////////////
 
 tasks.withType<Test> {
     useJUnitPlatform()
