@@ -2,7 +2,7 @@ import org.openapitools.generator.gradle.plugin.tasks.GenerateTask
 
 plugins {
     java
-    id("org.springframework.boot") version "3.1.1"
+    id("org.springframework.boot") version "3.1.2"
     id("io.spring.dependency-management") version "1.1.0"
     id("org.openapi.generator") version "7.0.0" // used to demonstrate the build cache
     id("com.dorongold.task-tree") version "2.1.1" // to look at the task tree
@@ -25,6 +25,10 @@ repositories {
     mavenCentral()
 }
 
+// Enable dependency locking
+//dependencyLocking {
+//    lockAllConfigurations()
+//}
 
 val mapstructVersion = "1.5.5.Final"
 

@@ -50,6 +50,18 @@ Gradle documentation:
 
 [Dependency Management](https://docs.gradle.org/current/userguide/core_dependency_management.html)
 
+### Dependency locking
+
+Enable dependency locking in [build.gradle.kts](build.gradle.kts).
+
+Generate the lockfile. It would be checked in to version control.
+
+```
+gradle dependencies --write-locks
+```
+
+Now upgrade Spring Boot to version 3.1.2 and attempt to run the build.
+
 
 ## (optional) Task 4 - Adding integration tests
 
