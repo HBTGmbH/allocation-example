@@ -22,8 +22,15 @@ gradle wrapper --gradle-version latest
 
 Goals:
 * Understand source sets, configurations, dependencies.
-* Understand the different classpaths used in Java projects.
-* Understand what a version conflict is and how Gradle resolves conflicts.
+* Understand the Java classpath used in Maven scopes and Gradle configurations.
+* Understand what a version conflict is and how Maven and Gradle resolve conflicts.
+
+| Maven Scope | Equivalent Gradle configuration                                                                                                     |
+|-------------|-------------------------------------------------------------------------------------------------------------------------------------|
+| `compile`   | `api` if the dependency should be exposed to consumers, `implementation` if not                                                     |
+| `provided`  | `compileOnly` (note that the provided Maven scope is also available at runtime while the `compileOnly` Gradle configuration is not) |
+| `runtime`   | `runtimeOnly`                                                                                                                       |
+| `test`      | `testImplementation`                                                                                                                |
 
 Your tasks:
 
@@ -31,7 +38,7 @@ Your tasks:
 * Compare with the declared dependencies in [build.gradle.kts](build.gradle.kts)
 * Which dependencies come transitively by depending on `spring-boot-starter-test`?
 * Look at [](conflictDemo/build.gradle.kts). Can you spot the version conflict?
-* Run the following command to analyze the conflict.
+* Run the following command to analyze the conflict and resolve it by fixing the version.
 
 ```
 gradle :conflictDemo:dependencyInsight --configuration runtimeClasspath --dependency org.apache.commons:commons-lang3
