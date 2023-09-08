@@ -1,4 +1,5 @@
 import org.openapitools.generator.gradle.plugin.tasks.GenerateTask
+import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
 
 plugins {
     java
@@ -9,7 +10,7 @@ plugins {
 }
 
 group = "de.hbt.cfa"
-version = "0.0.1-SNAPSHOT"
+version = "0.0.3-SNAPSHOT"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
@@ -119,5 +120,14 @@ tasks.register<GenerateTask>("generateApi") {
 
 // Run the api generation task before the compile task
 //tasks.compileJava { dependsOn("generateApi") }
+
+/////////////////////////////
+
+// Include this task to create a valid container image with ./gradlew bootBuildImage
+//tasks.named<BootBuildImage>("bootBuildImage") {
+//    imageName.set("${rootProject.name.lowercase()}:${project.version}")
+//    environment.set(environment.get() + mapOf("BP_JVM_VERSION" to "17", "BP_SPRING_CLOUD_BINDINGS_DISABLED" to "true"))
+//    buildpacks.set(listOf("paketo-buildpacks/ca-certificates", "gcr.io/paketo-buildpacks/amazon-corretto", "paketo-buildpacks/java"))
+//}
 
 /////////////////////////////

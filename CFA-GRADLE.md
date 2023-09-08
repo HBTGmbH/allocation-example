@@ -90,3 +90,17 @@ Gradle documentation:
 
 ## (optional) Task 5 - The build cache and openapi-generator
 
+
+## Task 6 - Build a container image
+
+Goals:
+* understand options for building (OCI) container images
+
+Your tasks:
+* Have a look at either [Jib](https://github.com/GoogleContainerTools/jib/tree/master/jib-gradle-plugin) or the [Spring Boot Gradle Plugin](https://docs.spring.io/spring-boot/docs/current/gradle-plugin/reference/htmlsingle/#build-image)
+* Get an idea of the differences between the two approaches and the good old plain Dockerfile (see also [Buildpack's comparison](https://buildpacks.io/features/#comparison))
+* Try `./gradlew bootBuildImage` and admire the result ... _NOT_. What is the reason for the build error?
+* Use the prepared "fix" in [build.gradle.kts](build.gradle.kts) and repeat above statement.
+* Look at your locally available Docker images, e.g. on the command line with `docker images`
+* Run the newly built image, e.g. on the command line with `docker run -it -p 8080:8080 allocationapplication:0.0.1-SNAPSHOT`
+* Navigate to http://localhost:8080
