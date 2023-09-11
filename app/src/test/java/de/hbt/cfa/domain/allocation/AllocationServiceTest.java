@@ -20,12 +20,10 @@ public class AllocationServiceTest {
     @Mock
     private ActivityRepository activityRepository;
 
-    private final AllocationMapper allocationMapper = new AllocationMapperImpl();
-
     @Test
     public void shouldReturnCorrectAllocation() {
         //given
-        var allocationService = new AllocationService(activityRepository, allocationMapper);
+        var allocationService = new AllocationService(activityRepository, AllocationMapper.INSTANCE);
 
         Participant participant = participant("lri");
         var activity = activityWithTimeSlots(timeSlotWithParticipant("Slot 1", participant));

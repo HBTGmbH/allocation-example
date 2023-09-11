@@ -93,7 +93,7 @@ Gradle documentation:
 
 ## Task 6 - Build a container image
 
-Goals:
+Goals: 
 * understand options for building (OCI) container images
 
 Your tasks:
@@ -104,3 +104,25 @@ Your tasks:
 * Look at your locally available Docker images, e.g. on the command line with `docker images`
 * Run the newly built image, e.g. on the command line with `docker run -it -p 8080:8080 allocationapplication:0.0.1-SNAPSHOT`
 * Navigate to http://localhost:8080
+
+
+## Task 7 - Platforms and Multi-Projects
+
+* We have a lot of options when it comes to structuring projects, e.g. _mono-repo_ vs. _multi-repo_, _source sets_ vs. _subprojects_
+* These options can often be combined, while others benefit each other, e.g. mono-repos are typically structured using multi-projects
+  * source sets can be used to structure code that has separate dependency graphs and does not rely on compilation results, e.g. `test` and `integration-test`
+  * multi-projects can be used to either [structure a single component](https://docs.gradle.org/current/userguide/multi_project_builds.html), or a [larger software](https://docs.gradle.org/current/userguide/structuring_software_products.html#structure_large_projects) that is kept in a mono-repo
+* Multi-projects often include a [platform project](https://docs.gradle.org/current/userguide/java_platform_plugin.html) that is used to define **common dependencies and versions** for all involved projects
+* Structuring platforms, domain and service code in separate projects also provides a way to simplify **fixtures code sharing**
+
+Goals:
+* Understand the basic multi-project structure
+* Understand how platforms work to share dependency versions between project
+* Understand what fixtures are and how they can be shared between projects
+
+Your Tasks:
+* Compare the original `cfa-gradle` branch and the `cfa-gradle-multi` branch. What is the first difference that meets the eye when looking at the root directory?
+* Open the `platform` subproject. What is the difference between this subproject and the others? How is the `build.gradle.kts` different?
+* The `platform` subproject is used by both the `domain-model` and the `app` subprojects, while the `domain-model` subproject is itself again used by the `app` subproject. Can you find ot how? (take a look at the `build.gradle.kts` files)
+* Test fixtures are a way of fixing test data to share between tests, often by creating a utility class that provides static constructor methods for objects that are used repeatedly. Where are the fixtures in this project, and what might be an advantage of defining them this way?
+* The integration tests in the `app` project are not using the fixtures provided by the `domain-model` project, but are using duplicates. Is this necessary? If not, do something about it.

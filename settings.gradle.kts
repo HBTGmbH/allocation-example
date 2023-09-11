@@ -1,2 +1,4 @@
 rootProject.name = "AllocationApplication"
-include("conflictDemo")
+include("platform")
+include("domain-model")
+include("app")

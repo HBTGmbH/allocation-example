@@ -4,7 +4,6 @@ import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
 plugins {
     java
     id("org.springframework.boot") version "3.1.2"
-    id("io.spring.dependency-management") version "1.1.0"
     id("org.openapi.generator") version "7.0.0" // used to demonstrate the build cache
     id("com.dorongold.task-tree") version "2.1.1" // to look at the task tree
 }
@@ -34,11 +33,12 @@ repositories {
 val mapstructVersion = "1.5.5.Final"
 
 dependencies {
-    annotationProcessor("org.mapstruct:mapstruct-processor:${mapstructVersion}")
+    annotationProcessor(platform(project(":platform")))
     annotationProcessor("org.projectlombok:lombok")
-    annotationProcessor("org.projectlombok:lombok-mapstruct-binding:0.2.0")
 
-    implementation("org.mapstruct:mapstruct:${mapstructVersion}")
+    implementation(platform(project(":platform")))
+
+    implementation(project(":domain-model"))
 
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-web")
@@ -50,6 +50,8 @@ dependencies {
     testImplementation("org.assertj:assertj-core")
     testImplementation("org.mockito:mockito-core")
     testImplementation("org.mockito:mockito-junit-jupiter")
+
+    testImplementation(testFixtures(project(":domain-model")))
 }
 
 /**
