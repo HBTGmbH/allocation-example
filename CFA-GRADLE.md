@@ -60,7 +60,7 @@ Generate the lockfile. It would be checked in to version control.
 gradle dependencies --write-locks
 ```
 
-Now upgrade Spring Boot to version 3.1.2 and attempt to run the build.
+Now upgrade Spring Boot to version 3.2.2 and attempt to run the build.
 
 
 ## (optional) Task 4 - Adding integration tests
@@ -102,5 +102,5 @@ Your tasks:
 * Try `./gradlew bootBuildImage` and admire the result ... _NOT_. What is the reason for the build error?
 * Use the prepared "fix" in [build.gradle.kts](build.gradle.kts) and repeat above statement.
 * Look at your locally available Docker images, e.g. on the command line with `docker images`
-* Run the newly built image, e.g. on the command line with `docker run -it -p 8080:8080 allocationapplication:0.0.1-SNAPSHOT`
+* Run the newly built image, e.g. on the command line with `docker run -it -p 8080:8080 allocationapplication:0.0.3-SNAPSHOT`
 * Navigate to http://localhost:8080
